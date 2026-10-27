@@ -1,11 +1,314 @@
-.App {
-  font-family: sans-serif;
-  text-align: center;
-  border: 1px solid black;
+/* Fonts */
+@font-face {
+  font-family: "Avenir";
+  src: url("/avenir-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  src: url("/avenir-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  src: url("/avenir-demibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  src: url("/avenir-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Page baseline: neutral background like Figma canvas */
+body {
+  margin: 0;
+  padding: 32px 16px;
+  background-color: #dbdbdb;
+  font-family: "Avenir", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Card Container matching Figma 544px width */
+.card-container {
+  width: 100%;
+  max-width: 544px;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0px 4px 16px 0px rgba(11, 17, 52, 0.15);
+}
+
+/* Image section */
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 272px;
+  background-color: #edf2f7;
+  overflow: hidden;
 }
 
 .mainPic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
+.badge-launching {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #fa275a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Hover carousel arrows */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  z-index: 2;
+  padding: 0 0 2px 0;
+}
+
+.image-wrapper:hover .carousel-arrow {
+  opacity: 1;
+}
+
+.carousel-arrow:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-prev {
+  left: 14px;
+}
+
+.carousel-next {
+  right: 14px;
+}
+
+/* Content Area */
 .mainContent {
+  padding: 24px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.building-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.title-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Figma exact dark navy */
+.project-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a2258;
+  line-height: 1.2;
+}
+
+/* Figma exact secondary text */
+.address {
+  margin: 0;
+  font-size: 14px;
+  color: #787d9c;
+}
+
+.pricing-section {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.psf-price {
+  font-size: 19px;
+  font-weight: 600;
+  color: #1a2258;
+  margin: 0;
+}
+
+.subprice-label {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.details-section {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Figma exact tertiary text */
+.meta-text {
+  margin: 0;
+  font-size: 16px;
+  color: #374151;
+}
+
+.action-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* Figma exact link blue */
+.see-description-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #216bdb;
+  cursor: pointer;
+}
+
+.see-description-btn:hover {
+  color: #1757d7;
+  text-decoration: underline;
+}
+
+/* Description */
+.description-container {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.description-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #374151;
+  white-space: pre-line;
+  margin: 0;
+}
+
+/* Phone Number component */
+.phone-number {
+  color: #216bdb;
+  font-weight: 600;
+  background-color: rgba(33, 107, 219, 0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.phone-number:hover {
+  background-color: rgba(33, 107, 219, 0.16);
+  text-decoration: underline;
+}
+
+.phone-number.revealed {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+/* Responsive: Mobile view */
+@media (max-width: 675px) {
+  body {
+    padding: 16px 8px;
+  }
+
+  .card-container {
+    max-width: 100%;
+  }
+
+  .image-wrapper {
+    height: 180px;
+  }
+
+  .carousel-arrow {
+    opacity: 0.7;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+
+  .mainContent {
+    padding: 16px;
+  }
+
+  .header-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pricing-section {
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #e5e7eb;
+  }
+
+  .project-title {
+    font-size: 17px;
+  }
+
+  .psf-price {
+    font-size: 16px;
+  }
+
+  .meta-text {
+    font-size: 14px;
+  }
 }
