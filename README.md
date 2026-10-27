@@ -34,3 +34,27 @@ Please fork this (from within [CodeSandbox link here](https://codesandbox.io/s/g
    Note: you will have to register on Figma if you don't already have an account
 
 2. Main pic is too heavy, please suggest ways to reduce its weight.
+
+
+
+
+## Answers & Notes
+
+### React Implementation
+- SEO & Description: Description starts rendered so search crawlers can parse it in initial HTML/SSR. In `useEffect`, it hides after client mount until the user clicks "See description".
+
+- Phone Numbers: Singapore numbers are 8 digits starting with 3, 6, 8, or 9. Handled with regex using word boundaries (`\b`) so CEA numbers like `R0123456` or year `2021` aren't affected. Numbers render as interactive spans that toggle between masked (`8234 XXXX`) and revealed on click.
+
+- Line Breaks: Handled with CSS `white-space: pre-line` on `.description-text`.
+
+
+### Styling Q2: Ways to reduce main pic weight
+The current image URL requests `w=2000&q=100`:
+
+1. Resize on CDN: A 500px card doesn't need a 2000px image. Dropping to `w=600` (or `w=800` for 2x retina) and `q=80` instead of 100 will cut the file size by ~80% with no noticeable visual difference.
+
+2. Modern Formats: Leverage `auto=format` or `<picture>` to serve WebP / AVIF to supported browsers.
+
+3. Responsive Images: Use `srcset` and `sizes` so mobile devices don't download desktop-size images.
+
+4. Lazy Loading: Add `loading="lazy"` so images below the fold aren't fetched before they're in view.
