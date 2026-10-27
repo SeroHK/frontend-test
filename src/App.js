@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 
 // Singapore numbers are 8 digits starting with 3, 6, 8, or 9
@@ -78,14 +78,33 @@ function renderDescription(text)
 
 export default function ListingAd({ pic, title, address, description })
 {
+  // Show initially for SSR/SEO crawlers, then hide after client loads
+  const [showDescription, setShowDescription] = useState(true);
+
+  useEffect(() =>
+  {
+    setShowDescription(false);
+  }, []);
+
+  function handleToggleDescription()
+  {
+    setShowDescription((prev) => !prev);
+  }
+
   return (
     <div className="App">
       <img className="mainPic" width="300" height="500" src={pic} alt={title} />
       <div className="mainContent">
         <h1>{title}</h1>
         <p className="address">{address}</p>
-        <button>See description</button>
-        <p className="description">{renderDescription(description)}</p>
+        <button type="button" onClick={handleToggleDescription}>
+          {showDescription ? "Hide description" : "See description"}
+        </button>
+        {showDescription && (
+          <div className="description-container">
+            <p className="description-text">{renderDescription(description)}</p>
+          </div>
+        )}
       </div>
     </div>
   );
