@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./styles.css";
 
 // Singapore numbers are 8 digits starting with 3, 6, 8, or 9
-// Using \b boundaries so we don't accidentally match CEA numbers like R0123456
+// Using \b boundaries so we don't accidentally match CEA license numbers like R0123456 or year 2021
 const SG_PHONE_REGEX = /\b([3689]\d{3})[ -]?(\d{4})\b/g;
 
 function PhoneNumber({ raw, masked })
@@ -76,9 +76,21 @@ function renderDescription(text)
   return parts;
 }
 
-export default function ListingAd({ pic, title, address, description })
+export default function ListingAd({
+  pic,
+  title,
+  address,
+  project_type,
+  year,
+  ownership_type,
+  psf_min,
+  psf_max,
+  subprice_label,
+  availabilities_label,
+  description
+})
 {
-  // Show initially for SSR/SEO crawlers, then hide after client loads
+  // Keep true initially for search crawlers/SSR, then collapse once client mounts
   const [showDescription, setShowDescription] = useState(true);
 
   useEffect(() =>
@@ -91,15 +103,86 @@ export default function ListingAd({ pic, title, address, description })
     setShowDescription((prev) => !prev);
   }
 
+  const psfText =
+    psf_min && psf_max
+      ? `$${psf_min.toLocaleString()} - $${psf_max.toLocaleString()} psf`
+      : null;
+
+  const propertyDetails = [project_type, year, ownership_type]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
-    <div className="App">
-      <img className="mainPic" width="300" height="500" src={pic} alt={title} />
-      <div className="mainContent">
-        <h1>{title}</h1>
-        <p className="address">{address}</p>
-        <button type="button" onClick={handleToggleDescription}>
-          {showDescription ? "Hide description" : "See description"}
+    <div className="card-container">
+      <div className="image-wrapper">
+        <span className="badge-launching">LAUNCHING SOON</span>
+        <img
+          className="mainPic"
+          src={pic}
+          alt={title || "Property"}
+          loading="lazy"
+        />
+
+        {/* Carousel arrows */}
+        <button
+          type="button"
+          className="carousel-arrow carousel-prev"
+          aria-label="Previous"
+          onClick={(e) => e.stopPropagation()}
+        >
+          ‹
         </button>
+        <button
+          type="button"
+          className="carousel-arrow carousel-next"
+          aria-label="Next"
+          onClick={(e) => e.stopPropagation()}
+        >
+          ›
+        </button>
+      </div>
+
+      <div className="mainContent">
+        <div className="header-row">
+          <div className="title-section">
+            <img
+              src="/building-icon.svg"
+              alt=""
+              className="building-icon"
+              width="40"
+              height="40"
+            />
+            <div className="title-text">
+              <h1 className="project-title">{title}</h1>
+              <p className="address">{address}</p>
+            </div>
+          </div>
+
+          <div className="pricing-section">
+            {psfText && <div className="psf-price">{psfText}</div>}
+            {subprice_label && (
+              <div className="subprice-label">{subprice_label}</div>
+            )}
+          </div>
+        </div>
+
+        <div className="details-section">
+          {propertyDetails && <p className="meta-text">{propertyDetails}</p>}
+          {availabilities_label && (
+            <p className="meta-text">{availabilities_label}</p>
+          )}
+        </div>
+
+        <div className="action-row">
+          <button
+            type="button"
+            className="see-description-btn"
+            onClick={handleToggleDescription}
+          >
+            {showDescription ? "Hide description" : "See description"}
+          </button>
+        </div>
+
         {showDescription && (
           <div className="description-container">
             <p className="description-text">{renderDescription(description)}</p>
